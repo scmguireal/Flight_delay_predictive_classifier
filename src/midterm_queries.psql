@@ -1,0 +1,2 @@
+SELECT * FROM flights
+WHERE flights.mkt_carrier LIKE 'UA'

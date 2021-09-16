@@ -19,7 +19,7 @@ The data are stored in the Postgres database.
 
 Predict whether any given flight will be late at any given time from the millions of flights in this database.
 
-* Right so this is simple enough...
+* Right so this is simple enough... (*sarcasm*)
 
 
 
@@ -62,4 +62,4 @@ Pickle for model saving
 
 
 
-Our model was able to predict any given flight as either delayed or not delayed with an 81% accuracy 7 days in advance using XGBoost while other methods were around 50-60% accuracy.
+Our model was able to predict any given flight as either delayed or not delayed with an 81% accuracy 7 days in advance using XGBoost while other methods were around 50-60% accuracy. Airline carriers were found to be one of the largest influencers of delay status.

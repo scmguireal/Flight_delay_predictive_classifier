@@ -1,52 +1,65 @@
-# Mid-Term Project
-This repository cointains all the information you need to work on the Mid-Term project.
+# Flight Delay Predictions 1-Week in Advance
 
-## Hello and Welcome!!!
 
-The goal is to predict arrival delays of commercial flights. Often, there isn't much airlines can do to avoid the delays, therefore, they play an important role in both profits and loss of the airlines. It is critical for airlines to estimate flight delays as accurate as possible because the results can be applied to both, improvements in customer satisfaction and income of airline agencies.
-
-### Files
-
-- **exploratory_analysis.ipynb**: this file contains 10 questions we need to answer during the data exploration phase. They will help us to understand the data and become familiar with different variables.
-- **modeling.ipynb**: this file contains instructions for modeling part of the project. We recommend to split modeling tasks into more notebooks.
-- **data_description.md**: when you need to look for any information regarding specific attributes in the data this is the file to look in.
-- **sample_submission.csv**: this file is the example of how the submission of the results should look like.
+The goal is to predict arrival delays of commercial flights without use of same day data. Often, there isn't much airlines can do to avoid the delays, therefore, they play an important role in both profits and loss of the airlines. It is critical for airlines to estimate flight delays as accurate as possible because the results can be applied to both, improvements in customer satisfaction and income of airline agencies.
 
 ### Data
 
-We will be working with data from air travel industry. We will have four separate tables:
+We will be working with data from air travel industry. We will have three separate tables:
 
 1. **flights**: The departure and arrival information about flights in US in years 2018 and 2019.
 2. **fuel_comsumption**: The fuel comsumption of different airlines from years 2015-2019 aggregated per month.
 3. **passengers**: The passenger totals on different routes from years 2015-2019 aggregated per month.
-5. **flights_test**: The departure and arrival information about flights in US in January 2020. This table will be used for evaluation. For submission, we are required to predict delays on flights from first 7 days of 2020 (1st of January - 7th of January). We can find sample submission in file _sample_submission.csv_
-
-The data are stored in the Postgres database. You can see the information about the hostname and credentials [in Compass](https://data.compass.lighthouselabs.ca/23284197-327b-4c82-84fa-f220a40a7d1a). 
 
 
-### Presentation Guidelines
-
-The main goal of this presentation is to prepare you for your **Demo Day** at the end of the bootcamp where your time will be capped. Therefore, it's important to keep the duration of the presentation to **max 5 minutes** (number of slides doesn't necessarily determine the duration of the presentation). Focus on explaining what you did, how you approached the problem, what you achieved, and, if appropriate, suggest what else could be done. Don't speak to every single task and step there is, focus more on the highlights and interesting findings instead. If you struggled with something, feel free to mention it, but do not undermine your work by highlighting that part.
-
-1. Spend **1 min** on project flow structure.
-    Which steps does your project have?
-2. Spend **1 min** on showing insights and relationships you found in the data during exploratory data analysis.
-3. Results (**1 min**):
-    - what modeling and sampling techniques did you use?
-    - evaluation metrics
-4. **1 min** on Feature Importance
-    - mention interesting features you have created
-    - what are the most important features?
-5. Explain the biggest challenges in **1 min**.
-    - what would you do if you have a bit more time?
+The data are stored in the Postgres database.
 
 
-### Submission Guidelines
+### Problem Statement
 
-1. Share the link to your project repository through Compass.
-2. The file with the same format as _sample_submission.csv_,  named **submission.csv** , that contains the predictions of delays for the first week of the year 2020 should be included in the repository as well.
+Predict whether any given flight will be late at any given time from the millions of flights in this database.
+
+* Right so this is simple enough...
 
 
-### How to Start
 
-You should spend some time with the datasets on your own. Try to look for interesting relationships and information inside the tables. Once you are familiar with the data and information in there you can move on to the EDA tasks from us that will further help you to get familiar with the datasets. Afterward, you can move onto the data preparation and modeling steps. Make sure you have enough time to prepare you slides and presentation at the end.
+### The Approach
+
+This repository is only focused on traditional ML techniques. I recognize that with the amount of data present NN would be a viable option and I may update this in the future to include them as well, but for now it's all about ML.
+
+The sheer amount of data included in this database is too much to process without more hardware power, so we decided to sample the data.
+
+We decided on taking the top 10 airports as our sample as it brought number of flights down to about 4M and included enough information across our big three features in the hypothesis:
+* Geographic Location
+* Airline Carrier
+* Time of year
+
+We integrated a weather API and classified weather conditions into different buckets from terrible weather to ideal conditions.
+
+### Hypothesis
+Our hypothesis was that geography, carrier, and time of year were the largest indicators of flight delay outside of realtime data.
+* Intuition:
+  - Geographic Features are important for two main reasons:
+    - Weather: Northern states will have a higher chance of delayed flights due to snow related conditions.
+    - Airport Popularity: Some airports are located in highly populated regions or are international airports. These airports are more likely to have delays due to higher traffic.
+  - Airline Carriers:
+    - Different carriers are different businesses. Each has different policies which effect how they operate.
+    - Some carriers are smaller with more dedicated routes. These can be expected to be less likely to have delays.
+    - Not all flights carry passengers. Some flights carry shipments of goods, are personal flights, or other things. Each of these could be expected to have different trends.
+  - Time of Year:
+    - Air Traffic is greatly influenced by seasonality. We can expected influxes in volume around holidays and summer time.
+    - Time of year affects weather conditions and therefore delays for different regions differently.
+
+### Methods
+
+SQL, Pandas, and Plotly were used for data exploration
+KNN, Random Forrest, Decision Tree, and XGBoost were used for modeling.
+SMOTE sampling for data imbalances
+GridSearchCV for hyperparameter tuning
+Pickle for model saving
+
+### Results
+
+
+
+Our model was able to predict any given flight as either delayed or not delayed with an 81% accuracy 7 days in advance using XGBoost while other methods were around 50-60% accuracy.

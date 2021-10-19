@@ -5,14 +5,14 @@ The goal is to predict arrival delays of commercial flights without use of same 
 
 ### Data
 
-We will be working with data from air travel industry. We will have three separate tables:
+We worked with data from the air travel industry stored in three separate tables:
 
 1. **flights**: The departure and arrival information about flights in US in years 2018 and 2019.
 2. **fuel_comsumption**: The fuel comsumption of different airlines from years 2015-2019 aggregated per month.
 3. **passengers**: The passenger totals on different routes from years 2015-2019 aggregated per month.
 
 
-The data are stored in the Postgres database.
+The data was pulled from a Postgres database.
 
 
 ### Problem Statement
@@ -27,14 +27,12 @@ Predict whether any given flight will be late at any given time from the million
 
 This repository is only focused on traditional ML techniques. I recognize that with the amount of data present NN would be a viable option and I may update this in the future to include them as well, but for now it's all about ML.
 
-The sheer amount of data included in this database is too much to process without more hardware power, so we decided to sample the data.
-
-We decided on taking the top 10 airports as our sample as it brought number of flights down to about 4M and included enough information across our big three features in the hypothesis:
+Due to processing contraints from the amount of data available, we decided on taking the top 10 airports as our sample as it brought number of flights down to about 4M and included enough information across our big three features in the hypothesis:
 * Geographic Location
 * Airline Carrier
 * Time of year
 
-We integrated a weather API and classified weather conditions into different buckets from terrible weather to ideal conditions.
+We integrated a weather API and classified weather conditions into 8 different buckets from terrible weather to ideal conditions.
 
 ### Hypothesis
 Our hypothesis was that geography, carrier, and time of year were the largest indicators of flight delay outside of realtime data.
